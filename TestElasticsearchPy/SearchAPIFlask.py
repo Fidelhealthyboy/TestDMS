@@ -2,20 +2,9 @@ from flask import Flask
 from flask_restful import Resource, Api
 
 from elasticsearch import Elasticsearch
-import subprocess
-
-#Run the Mapreduce
-with open('output.txt','w') as f:
-        mapProcess = subprocess.run([ 'yarn','jar','Storejsonesmr.jar', 'elasticsearch.EsDriver','ElasticsearchInput.txt', 'ElastictestOutput3','index1'],stdout=f)
-
-#print(mapProcess.stdout)
-
 
 app = Flask(__name__)
 api = Api(app)
-
-if mapProcess.returncode == 0:
-        print('Map completed')
 
 #connect to Elasticsearch
 es = Elasticsearch(HOST="http://master",PORT=9200)
