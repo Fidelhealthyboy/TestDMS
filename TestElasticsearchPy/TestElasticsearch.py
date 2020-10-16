@@ -2,10 +2,10 @@ from elasticsearch import Elasticsearch
 import subprocess
 
 #Run the Mapreduce 
+with open('output.txt','w') as f:
+	mapProcess = subprocess.run([ 'yarn','jar','Storejsonesmr.jar', 'elasticsearch.EsDriver','ElasticsearchInput.txt', 'ElastictestOutput3','index1'],stdout=f)
 
-mapProcess = subprocess.run([ 'yarn','jar','Storejsonesmr.jar', 'elasticsearch.EsDriver','ElasticsearchInput.txt', 'ElastictestOutput2'],stdout=subprocess.PIPE)
-
-print(mapProcess.stdout)
+#print(mapProcess.stdout)
 
 if mapProcess.returncode == 0:
 	print('Map completed')
@@ -14,5 +14,10 @@ if mapProcess.returncode == 0:
 es = Elasticsearch(HOST="http://master",PORT=9200)
 
 #check Elasticsearch Index
-print(es.indices.exists(index="index1"))
+index_exists = es.indices.exists(index="index1")
+print(index_exists)
+
+if index_exists:
+	result_search = es.search(index="index1",body={"from":0,"size":3,"query":{"match":{"addr":"wenyixi"}}})
+	print(result_search) 
 
