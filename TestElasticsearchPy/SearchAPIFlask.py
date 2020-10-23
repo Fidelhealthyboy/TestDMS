@@ -9,22 +9,34 @@ api = Api(app)
 #connect to Elasticsearch
 es = Elasticsearch(HOST="http://master",PORT=9200)
 
-#check Elasticsearch Index
-index_exists = es.indices.exists(index="index1")
-print(index_exists)
-
-
 
 class ElasticSearchQueries(Resource):
 	def __init__(self):
 		pass
 
-	def get(self,Index,query):
-		if query == "match_all":
+	def get(self,Index,queryType,queryParameter):
+
+		if queryType == "match_all":
 			return es.search(index=Index, body={"query": {"match_all": {}}})
+
+		if queryType == "exists":
+			return es.exists(index=Index)
+
+                if queryType == "match":
+			return es.search(index=Index, body={"query":{"match":{"addr":queryParameter}
+
+		if queryType == "match_phrase":
+			return es.search(index=Index, body={"query":{"match_phrase":{"addr":queryParameter}		
+
+		if queryType == "term":
+                        return es.search(index=Index, body={"query":{"term":{"addr":queryParameter}
+		
+	get delete(self,Index):
+		return es.delete(index=Index)
 		
 	
-api.add_resource(ElasticSearchQueries,"/search/<string:Index>/<string:query>")
+api.add_resource(ElasticSearchQueries,"/search/<string:Index>/<string:queryType>/<string:queryParameter>")
+api.add_resource(ElasticSearchQueries,"/delete")
 
 if __name__ == "__main__":
 	app.run(debug=True)
