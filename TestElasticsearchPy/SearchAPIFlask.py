@@ -19,19 +19,18 @@ class ElasticSearchQueries(Resource):
 			return es.search(index=Index, body={"query": {"match_all": {}}})
 		elif queryType == "exists":
 			return es.exists(index=Index)
-                elif queryType == "match" :
+		elif queryType == "match":
 			return es.search(index=Index, body={"query":{"match":{"addr":queryParameter}}})
 		elif queryType == "match_phrase":
 			return es.search(index=Index, body={"query":{"match_phrase":{"addr":queryParameter}}})		
 		elif queryType == "term":
                         return es.search(index=Index, body={"query":{"term":{"addr":queryParameter}}})
 		
-	get delete(self,Index):
+	def delete(self,Index):
 		return es.delete(index=Index)
 		
 	
 api.add_resource(ElasticSearchQueries,"/search/<string:Index>/<string:queryType>/<string:queryParameter>")
-api.add_resource(ElasticSearchQueries,"/delete")
 
 if __name__ == "__main__":
 	app.run(debug=True)
