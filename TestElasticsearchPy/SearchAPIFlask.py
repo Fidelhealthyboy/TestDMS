@@ -20,6 +20,7 @@ class ElasticSearchQueries(Resource):
 		elif queryType == "exists":
 			return es.exists(index=Index)
 		elif queryType == "match":
+			print(queryType)
 			return es.search(index=Index, body={"query":{"match":{"addr":queryParameter}}})
 		elif queryType == "match_phrase":
 			return es.search(index=Index, body={"query":{"match_phrase":{"addr":queryParameter}}})		
