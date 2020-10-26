@@ -15,21 +15,16 @@ class ElasticSearchQueries(Resource):
 		pass
 
 	def get(self,Index,queryType,queryParameter):
-
 		if queryType == "match_all":
 			return es.search(index=Index, body={"query": {"match_all": {}}})
-
-		if queryType == "exists":
+		elif queryType == "exists":
 			return es.exists(index=Index)
-
-                if queryType == "match":
-			return es.search(index=Index, body={"query":{"match":{"addr":queryParameter}
-
-		if queryType == "match_phrase":
-			return es.search(index=Index, body={"query":{"match_phrase":{"addr":queryParameter}		
-
-		if queryType == "term":
-                        return es.search(index=Index, body={"query":{"term":{"addr":queryParameter}
+                elif queryType == "match" :
+			return es.search(index=Index, body={"query":{"match":{"addr":queryParameter}}})
+		elif queryType == "match_phrase":
+			return es.search(index=Index, body={"query":{"match_phrase":{"addr":queryParameter}}})		
+		elif queryType == "term":
+                        return es.search(index=Index, body={"query":{"term":{"addr":queryParameter}}})
 		
 	get delete(self,Index):
 		return es.delete(index=Index)
