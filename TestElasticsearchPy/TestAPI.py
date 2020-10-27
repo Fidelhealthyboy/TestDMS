@@ -1,8 +1,8 @@
 
 import requests
 
-searchparameter = "wangshang Rd"
-index = "index1"
+searchparameter = "b"
+index = "customer"
 queryType = "match_phrase"
 
 url = " http://127.0.0.1:5000/search/{}/{}/{}".format(index,queryType,searchparameter)
@@ -12,7 +12,9 @@ result = requests.get(url=url)
 #print(result.json())
 
 result_Json = result.json()
-all_hits = result_Json['hits']['hits']  
+all_hits = result_Json['hits']['hits']
+
+#print(all_hits)
 
 print ("total hits using 'size' param:", len(result_Json["hits"]["hits"]))
 
@@ -20,9 +22,11 @@ print ("total hits using 'size' param:", len(result_Json["hits"]["hits"]))
 for num, doc in enumerate(all_hits):
 	print ("DOC ID:", doc["_id"], "--->", doc, type(doc), "\n")
 
+	print("source: ", doc["_source"])
+	print("items: ", doc.items())   
     # Use 'iteritems()` instead of 'items()' if using Python 2
-	for key, value in doc.items():
-		print (key, "-->", value)
+#	for key, value in doc.items():
+#		print (key, "-->", value)
 
     # print a few spaces between each doc for readability
 	print ("\n\n")
